@@ -1,0 +1,352 @@
+JAVA / SPRING INTERVIEW QUESTION LIST FOR 2-YEAR EXPERIENCE
+
+This document contains a realistic list of Java, Spring Boot, REST, DB, Docker, microservices, and project-based interview questions generally asked for a 2-year experienced Java developer.
+
+1. Core Java
+1. What is the difference between JDK and JRE?
+2. What is the difference between an abstract class and an interface?
+3. What is method overloading?
+4. What is method overriding?
+5. What is the difference between final, finally, and finalize?
+6. What is the difference between String, StringBuilder, and StringBuffer?
+7. What is the difference between == and equals()?
+8. What are access modifiers in Java?
+9. What is encapsulation?
+10. What is inheritance?
+11. What is polymorphism?
+12. What is abstraction?
+13. What is the difference between ArrayList and LinkedList?
+14. What is the difference between HashMap and HashSet?
+15. What is a HashMap internally?
+16. What is a Set in Java?
+17. What is the difference between checked and unchecked exceptions?
+18. What is the purpose of try, catch, finally?
+19. What is a custom exception?
+20. What is multithreading in Java?
+21. What is the difference between Thread and Runnable?
+22. What is synchronization in Java?
+23. What is the use of the synchronized keyword?
+24. What is Java 8 lambda expression?
+25. What are streams in Java 8?
+26. What is the Optional class?
+27. What is the difference between collection and collections?
+28. What is the difference between list and set?
+29. What is the difference between queue and deque?
+30. What is the difference between fail-fast and fail-safe iterators?
+31. What is a class in Java?
+32. What is an object in Java?
+33. What is the constructor in Java?
+34. What is overloading and overriding with examples?
+35. What is static keyword used for?
+36. What is the difference between static and instance methods?
+37. What is the purpose of the Object class?
+38. What is the difference between shallow copy and deep copy?
+39. What is serialization in Java?
+40. What is the transient keyword used for?
+
+2. OOP Concepts
+41. Explain encapsulation with an example.
+42. Explain inheritance with an example.
+43. Explain polymorphism with an example.
+44. What is composition?
+45. What is the difference between composition and inheritance?
+46. Why do we use interfaces?
+47. What is abstraction in OOP?
+48. Why is encapsulation important?
+49. How do classes interact in an application?
+50. What are SOLID principles?
+
+3. Spring Boot
+51. What is Spring Boot?
+52. Why do we use Spring Boot instead of plain Spring?
+53. What is dependency injection?
+54. What is inversion of control (IoC)?
+55. What is a Bean in Spring?
+56. What is the purpose of @SpringBootApplication?
+57. What is @Controller?
+58. What is @RestController?
+59. What is @Service?
+60. What is @Repository?
+61. What is @Configuration?
+62. What is @Autowired?
+63. What is constructor injection?
+64. What is field injection?
+65. What is setter injection?
+66. What is Spring Boot auto-configuration?
+67. What is application.properties?
+68. What is application.yml?
+69. What is the difference between Spring MVC and Spring Boot?
+70. What is the lifecycle of a Spring Bean?
+71. What is @Transactional?
+72. What is Spring Data JPA?
+73. What is a BeanFactory?
+74. What is ApplicationContext?
+75. What is the purpose of @ComponentScan?
+76. What is the difference between @Component and @Service?
+77. What is @Value annotation?
+78. What is @Profile?
+79. What is @Qualifier?
+80. What is the meaning of singleton bean scope?
+81. What is prototype scope?
+82. What is Spring Boot Actuator?
+83. What is the role of Spring Boot starter dependencies?
+84. What are the common annotations used in Spring Boot?
+85. How does Spring Boot create beans automatically?
+86. What is the difference between @RequestMapping and @GetMapping?
+87. What is @PathVariable?
+88. What is @RequestParam?
+89. What is @RequestBody?
+90. What is @ResponseBody?
+
+4. REST APIs
+91. What is REST?
+92. What is a REST API?
+93. What are HTTP methods?
+94. What is the difference between GET and POST?
+95. What is the difference between PUT and PATCH?
+96. What is the purpose of POST /users?
+97. What are status codes 200, 201, 204, 400, 404, 500?
+98. What is the difference between JSON and XML?
+99. What is a DTO?
+100. Why do we use DTOs in APIs?
+101. What is the difference between Entity and DTO?
+102. What is validation in REST APIs?
+103. What is @Valid?
+104. What is @NotNull, @NotBlank, @Email?
+105. How do you handle exceptions in REST API?
+106. What is @ControllerAdvice?
+107. How do you return a custom error response?
+108. What is ResponseEntity in Spring?
+109. What is a request body?
+110. What is a response body?
+111. What is the difference between path parameter and query parameter?
+112. How do you secure an API?
+113. What is CORS?
+114. What is OpenAPI or Swagger?
+115. How do you document APIs in Spring Boot?
+116. How do you test REST endpoints?
+117. What is an API contract?
+
+5. Database / SQL / JPA
+118. What is JDBC?
+119. What is JPA?
+120. What is Hibernate?
+121. What is the difference between JPA and Hibernate?
+122. What is ORM?
+123. What is an entity class?
+124. What is a repository in Spring Data JPA?
+125. What is @Entity annotation?
+126. What is @Table?
+127. What is @Id?
+128. What is @GeneratedValue?
+129. What is @ManyToOne?
+130. What is @OneToMany?
+131. What is @JoinColumn?
+132. What is a transaction in DB?
+133. What is @Transactional?
+134. How do you persist data with JPA?
+135. What is a repository method?
+136. What is the difference between save() and findById()?
+137. What is the difference between DELETE and TRUNCATE?
+138. What is the difference between primary key and foreign key?
+139. What is normalization?
+140. What is indexing?
+141. What is the difference between INNER JOIN and LEFT JOIN?
+142. What is GROUP BY?
+143. What is HAVING?
+144. What is the difference between WHERE and HAVING?
+145. What is a subquery?
+146. What are aggregate functions?
+147. How do you write query methods in Spring Data JPA?
+148. What is the difference between JPQL and SQL?
+149. How do you handle lazy loading?
+150. How do you optimize database performance?
+151. What is PostgreSQL?
+152. Why use PostgreSQL?
+153. What is schema in a database?
+154. What are constraints in SQL?
+155. What is a unique key?
+156. What is a foreign key constraint?
+
+6. Microservices / gRPC
+157. What is microservice architecture?
+158. What is the difference between monolith and microservice?
+159. Why do organizations use microservices?
+160. What are the benefits of microservices?
+161. What are the challenges in microservices?
+162. What is gRPC?
+163. What is a proto file?
+164. What is protobuf?
+165. Why is gRPC better than REST for internal services?
+166. What is the difference between REST and gRPC?
+167. What is a gRPC client?
+168. What is a gRPC server?
+169. What is a stub in gRPC?
+170. How does gRPC communicate over HTTP/2?
+171. What is a service contract?
+172. Why is strong typing useful in gRPC?
+173. What is the purpose of a billing proto file?
+174. What is a .proto message?
+175. What is a .proto service?
+176. What is a gRPC request and response?
+177. Why do we use gRPC for internal service communication?
+178. What are the common problems in gRPC architecture?
+179. What is service-to-service communication?
+180. What is a blocking stub?
+
+7. Docker / Deployment
+181. What is Docker?
+182. What is an image in Docker?
+183. What is a container in Docker?
+184. What is containerization?
+185. What is the difference between a VM and a container?
+186. What is Docker Compose?
+187. What is a docker-compose.yml file?
+188. What is port mapping in Docker?
+189. Why is localhost not enough in Docker networking?
+190. How do containers communicate with each other?
+191. What is a Docker network?
+192. What are environment variables in Docker?
+193. How do you expose application ports?
+194. What is a Dockerfile?
+195. What are health checks in Docker Compose?
+196. Why rebuild images after dependency changes?
+197. How do you run multiple services together?
+198. What is container orchestration?
+199. What is Kubernetes?
+200. What is the difference between Docker Swarm and Kubernetes?
+
+8. Maven / Build / Dependency Management
+201. What is Maven?
+202. What is pom.xml?
+203. What is a dependency in Maven?
+204. What is transitive dependency?
+205. How do you resolve dependency conflicts?
+206. What is a BOM in Maven?
+207. What is the difference between compile, test, and runtime dependencies?
+208. What is a build lifecycle in Maven?
+209. What is the purpose of mvn clean install?
+210. What is the difference between Maven and Gradle?
+211. How do version mismatches break an app?
+212. What is a classloading issue in Java?
+213. How do you inspect project dependencies?
+214. Why do we need version alignment across modules?
+
+9. Debugging and Troubleshooting
+215. How do you debug a Spring Boot application?
+216. How do you identify the root cause of a startup failure?
+217. What is the first thing you check when the app fails to start?
+218. What are logs useful for in debugging?
+219. How do you debug a database connection problem?
+220. How do you debug a port conflict?
+221. How do you debug a gRPC startup issue?
+222. What is AbstractMethodError in Java?
+223. What is a dependency mismatch?
+224. How would you debug a NullPointerException?
+225. What is stack trace analysis?
+226. What is the difference between compile-time and runtime errors?
+227. How do you validate configuration values?
+228. What is the difference between dev environment and production environment?
+229. What is the purpose of health checks?
+230. How do you troubleshoot Docker container startup issues?
+231. What is the role of environment variables in debugging?
+
+10. Git / Version Control
+232. What is Git?
+233. What is a repository?
+234. What is branching?
+235. What is a merge conflict?
+236. What is a pull request?
+237. What is git pull vs git fetch?
+238. What is git stash?
+239. How do you revert a commit?
+240. What is git checkout?
+241. What is git cherry-pick?
+242. How do you merge branches?
+243. How do you resolve a conflict in code?
+244. What is commit history useful for?
+
+11. Project-based Questions
+245. Can you explain your project architecture?
+246. What is the flow of patient creation in your application?
+247. Why did you use a REST API for patient management?
+248. Why did you use gRPC for the billing integration?
+249. What happens when a patient is created?
+250. How does patient-service communicate with billing-service?
+251. What are the key files in your project?
+252. What was the biggest bug you faced in the project?
+253. How did you fix the Docker networking issue?
+254. Why did localhost not work inside Docker containers?
+255. What was the gRPC dependency mismatch issue you solved?
+256. What is the purpose of application.properties in your project?
+257. How did validation help in the request flow?
+258. What is the role of PostgreSQL in the patient service?
+259. What is the role of gRPC proto in the billing service?
+260. What is the exact flow from HTTP request to billing call?
+261. What is the difference between service name and localhost in Docker?
+262. What is the benefit of using DTOs in your project?
+263. Why did you separate patient and billing service responsibilities?
+264. How do you ensure data correctness in the API?
+265. What would you improve if you continued this project?
+
+12. Behavioral Questions
+266. Tell me about yourself.
+267. Tell me about a project you worked on.
+268. What was the biggest challenge you faced in your project?
+269. How do you debug a problem when the application fails?
+270. How do you work in a team?
+271. What are your strengths?
+272. What are your weaknesses?
+273. Why do you want to work here?
+274. Why should we hire you?
+275. How do you handle pressure or deadlines?
+276. What do you do when you don’t know the answer?
+277. How do you keep learning new technologies?
+278. What is your career goal?
+279. What are your preferred technologies?
+280. How do you contribute to team productivity?
+
+13. Short Interview Answers You Can Practice
+281. What is Spring Boot?
+Answer: Spring Boot is a framework that simplifies Java application development by providing auto-configuration, embedded servers, and production-ready defaults.
+282. What is REST?
+Answer: REST is an architectural style for designing web services using HTTP methods and stateless communication.
+283. What is gRPC?
+Answer: gRPC is a high-performance RPC framework that uses HTTP/2 and Protobuf for strongly typed communication between services.
+284. Why use Docker?
+Answer: Docker helps package and run applications consistently across environments and makes service orchestration easier.
+285. Why did Docker localhost fail?
+Answer: Inside a container, localhost refers to the container itself, not another service. We used service names like postgres and billing-service.
+286. What was the main bug in your project?
+Answer: The gRPC dependency mismatch caused startup failure, which was resolved by aligning versions and rebuilding containers.
+287. Why did you use DTOs?
+Answer: DTOs separate API contracts from database entities and help validate and transfer required fields safely.
+288. What is the role of validation?
+Answer: Validation ensures the incoming request is complete and valid before data reaches the database or downstream service.
+289. What is your biggest learning from this project?
+Answer: Real-world systems require not only writing code, but also understanding networking, dependency management, and integration debugging.
+
+14. Most Likely Questions for a 2-Year Java Developer
+290. Difference between abstract class and interface
+291. What is Spring Boot?
+292. What is dependency injection?
+293. What is a REST controller?
+294. What is JPA?
+295. How do you validate API input?
+296. What is the difference between PUT and PATCH?
+297. What is transaction management?
+298. What is microservice architecture?
+299. What is gRPC?
+300. Why are Docker service names used instead of localhost?
+301. How do you handle exception in Spring Boot?
+302. What is a DTO and why use it?
+303. Explain your project architecture.
+304. What troubleshooting steps do you take for startup failure?
+305. What is Maven and why is dependency version alignment important?
+306. What is the difference between HashMap and HashSet?
+307. What is the difference between StringBuilder and StringBuffer?
+308. What is the difference between REST and gRPC?
+309. What is @Transactional?
+310. What is the difference between WHERE and HAVING?
+
+This list is realistic for a 2-year experienced Java developer interview and covers both fundamentals and project-based questions.

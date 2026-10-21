@@ -1,0 +1,5 @@
+### GET request to example server
+GET https://examples.http-client.intellij.net/get
+    ?generated-in=IntelliJ IDEA
+
+### its like a postman built into intellij idea, you can use it to test your api endpoints and see the response in a nice format.

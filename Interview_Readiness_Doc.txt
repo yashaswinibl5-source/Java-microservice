@@ -1,0 +1,244 @@
+PATIENT MANAGEMENT MICROSERVICE – INTERVIEW READINESS DOCUMENT
+
+Project context
+- Built a patient management microservice integrated with a billing service using gRPC.
+- The system follows a microservice pattern with separate components for:
+  - Patient service (REST API + JPA + PostgreSQL)
+  - Billing service (gRPC server)
+  - PostgreSQL database
+  - Docker Compose orchestration
+- The goal was to allow patient creation/update to trigger a billing account creation request through gRPC.
+
+1. Core technical concepts (Basic to Advanced)
+
+A. Basic concepts
+1. REST API
+   - HTTP methods: GET, POST, PUT, DELETE
+   - CRUD flow for patient management
+   - Example: POST /patients creates a patient record
+   - ResponseEntity is used to return proper HTTP status and body
+
+2. Spring Boot
+   - Simplifies Java application bootstrapping
+   - Auto-configures application components, web server, database integration, etc.
+   - @RestController, @RequestMapping, @GetMapping, @PostMapping, @PutMapping, @DeleteMapping
+
+3. Java classes and packages
+   - Controller handles incoming API requests
+   - Service contains business logic
+   - Repository handles database access
+   - DTOs transfer data between layers
+   - Entity/model represents database record structure
+
+4. JPA / Hibernate
+   - Maps Java classes to database tables
+   - Handles persistence using Spring Data JPA repositories
+   - Entity classes maintain data model
+
+5. PostgreSQL
+   - Relational database used to persist patient information
+   - Used for stable and structured data storage
+
+6. Validation
+   - @Valid and Bean Validation ensure request fields are valid
+   - Example: name required, email format valid, dateOfBirth required
+
+B. Intermediate concepts
+1. DTO design
+   - DTOs separate API contract from persistence model
+   - Prevent accidental exposure of internal entity structure
+   - Used for request and response handling
+
+2. Layered architecture
+   - Controller -> Service -> Repository -> Database
+   - Keeps responsibilities separated
+   - Easier to maintain and test
+
+3. Dependency injection
+   - Spring automatically injects dependencies using constructors
+   - Example: PatientService depends on PatientRepository and BillingServiceGrpcClient
+
+4. Environment configuration
+   - application.properties or environment variables for runtime config
+   - Example:
+     - spring.datasource.url
+     - billing.service.address
+     - billing.service.port
+   - Important when running inside Docker containers
+
+5. Docker networking
+   - Containers cannot use localhost to talk to other containers
+   - Use service names like postgres and billing-service inside Docker network
+   - Host port mapping is separate from container internal port mapping
+
+6. gRPC basics
+   - gRPC is a high-performance RPC framework built on HTTP/2
+   - Uses .proto files to define service contracts
+   - More efficient than REST for service-to-service communication
+
+7. Protobuf
+   - Protocol Buffers define message structure and service methods
+   - Compact, fast, strongly typed
+   - Example contract:
+     - BillingRequest { patientId, name, email }
+     - BillingResponse { accountId, status }
+
+C. Advanced concepts
+1. Microservice communication
+   - Patient service calls billing service asynchronously/synchronously over RPC
+   - Different services own different responsibilities
+   - Independence improves scalability and maintainability
+
+2. Service discovery and networking in containers
+   - DNS resolution via Docker Compose service names
+   - Example: billing-service:9001 is used instead of localhost:9001 inside the container
+   - This is critical in a multi-container setup
+
+3. gRPC client/server integration in Spring Boot
+   - The patient service acts as a gRPC client
+   - Billing service acts as a gRPC server
+   - ManagedChannel and blocking stub are used to call methods
+
+4. Runtime startup failures and dependency compatibility
+   - A major issue in the project was a gRPC library mismatch
+   - Root cause: server and client libraries were not aligned
+   - Error example:
+     - AbstractMethodError
+     - Failed to start bean 'shadedNettyGrpcServerLifecycle'
+   - This is a classic example of transitive dependency incompatibility in Java projects
+
+5. Build and dependency management
+   - Maven manages versions and transitive dependencies
+   - Dependency conflicts can break runtime behavior, even when code compiles
+   - BOM / version alignment is essential in multi-module systems
+
+6. Observability and debugging
+   - Logs show startup sequence, service initialization, database connection, and gRPC target binding
+   - Useful logs:
+     - Tomcat started on port 4000
+     - HikariPool started
+     - gRPC Server started, listening on address: *, port: 9001
+   - This helps confirm each layer is healthy
+
+7. Resilience and reliability patterns
+   - Correct environment wiring is crucial
+   - Rebuilding Docker images ensures stale JARs are not reused
+   - Health checks and proper startup ordering help services become reliable
+
+2. Challenges faced during this project
+
+Challenge 1: gRPC startup loop / crash
+- Symptom: application kept failing during startup
+- Root cause: mismatched gRPC library versions causing AbstractMethodError
+- Fix: align dependency versions and rebuild containers
+
+Challenge 2: Docker localhost confusion
+- Inside a container, localhost refers to itself, not other containers
+- This caused DB and service connection failures
+- Fix: use postgres and billing-service service names instead
+
+Challenge 3: Wrong database host / environment config
+- App pointed to localhost instead of postgres when running in Docker
+- Fix: use environment variables and correct Spring datasource configuration
+
+Challenge 4: gRPC service not visible as expected in IDE / Maven
+- The issue was not a missing service class
+- It was about understanding the runtime flow: client-service vs server-service distinction
+- Fix: separate gRPC client use from server use and verify actual runtime wiring
+
+Challenge 5: Startup ordering and container dependencies
+- Services needed PostgreSQL and billing-service to be available before dependent services initialized
+- Fix: use Docker Compose health checks and proper environment variables
+
+Challenge 6: Validation handling
+- Patient creation required valid ISO date string like 1999-05-15
+- Missing or invalid date format caused validation errors
+- Fix: pass valid request payloads
+
+3. Technical decisions and design rationale
+
+Why REST for patient API?
+- Good for external clients and UI integration
+- Easy to test with Postman or curl
+
+Why gRPC for billing call?
+- Efficient internal service-to-service communication
+- Strong typing via Protobuf
+- Better than HTTP JSON for inter-microservice backend calls
+
+Why separate Docker services?
+- Isolates workloads and dependencies
+- Makes networking explicit and predictable
+- Easier to scale and manage
+
+Why align dependency versions?
+- Prevent runtime incompatibility and class-loading errors
+- Critical for Java projects with transitive dependencies
+
+4. Architecture flow
+
+Patient creation flow
+1. Client sends HTTP POST to /patients
+2. PatientController receives request
+3. PatientService validates the business flow
+4. Patient entity is saved in PostgreSQL
+5. PatientService calls BillingServiceGrpcClient
+6. Client builds BillingRequest with patientId, name, email
+7. gRPC request goes to billing-service on port 9001
+8. BillingGrpcService receives request
+9. Service returns BillingResponse with accountId and status
+
+5. Important project files
+- patientservice/pom.xml
+  - Dependency management and Maven configuration
+- billingservice/pom.xml
+  - Billing service gRPC server setup
+- patientservice/src/main/resources/application.properties
+  - Database and billing host configuration
+- docker-compose.yml
+  - Container orchestration and network wiring
+- patientservice/src/main/java/com/system/PatientManagement/service/PatientService.java
+  - Business flow and billing trigger
+- patientservice/src/main/java/com/system/PatientManagement/grpc/BillingServiceGrpcClient.java
+  - gRPC client implementation
+- billingservice/src/main/java/com/pm/billingservice/grpc/BillingGrpcService.java
+  - gRPC server implementation
+
+6. Core interview talking points
+
+Q: What is the difference between REST and gRPC?
+A: REST is widely used for external APIs, uses JSON over HTTP, and is easier for browser/mobile clients. gRPC is better for backend service-to-service communication, uses HTTP/2, and is compact and strongly typed via Protobuf.
+
+Q: Why did the app fail to start?
+A: There was a dependency mismatch in the gRPC libraries. The server startup expected a method signature that the currently loaded Netty gRPC classes did not implement.
+
+Q: Why did Docker networking fail?
+A: localhost inside a container points to itself. We had to use Docker service names like postgres and billing-service to connect correctly.
+
+Q: How did you fix the issue?
+A: Aligned dependency versions, removed unnecessary server-side gRPC setup from the patient client, updated environment variables, and rebuilt Docker images.
+
+Q: Why is validation important?
+A: It reduces invalid data and prevents bad input from reaching the database or downstream services.
+
+Q: What did you learn from this project?
+A: I learned how inter-service communication, dependency management, container networking, and startup debugging fit together in real-world microservices.
+
+7. Sample answer for an interview
+
+"I built a patient management microservice with a billing integration using gRPC. The patient service exposes a REST API, stores patient records in PostgreSQL, and triggers a billing creation call when a patient is created or updated. The billing service implements the gRPC interface and responds with a billing account status. A major challenge was a gRPC dependency mismatch that caused the application startup to fail with AbstractMethodError. I fixed it by aligning the gRPC versions and ensuring the patient service was acting as a client only, not a server. Another challenge was Docker networking; inside containers, localhost is not the other service, so I had to configure communication using Docker service names like postgres and billing-service. After fixing the configuration and rebuilding the containers, the system started successfully and the full patient-to-billing flow worked end-to-end."
+
+8. Summary
+This project demonstrates:
+- Java Spring Boot backend development
+- REST API design and validation
+- JPA and PostgreSQL persistence
+- Docker Compose orchestration
+- gRPC inter-service communication
+- Dependency troubleshooting and startup debugging
+- Real-world microservice architecture problem solving
+
+This is a strong interview-ready project because it combines backend development, architecture design, integration patterns, and production-like debugging experience.
+
+
+END OF DOCUMENT

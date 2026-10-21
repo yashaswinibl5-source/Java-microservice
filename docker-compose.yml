@@ -1,0 +1,50 @@
+﻿services:
+  postgres:
+    image: postgres:16-alpine
+    container_name: patient-postgres
+    environment:
+      POSTGRES_DB: patientservicedb
+      POSTGRES_USER: YASHU
+      POSTGRES_PASSWORD: YASHU
+    ports:
+      - "5433:5432"
+    volumes:
+      - patient_pgdata:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U YASHU -d patientservicedb"]
+      interval: 5s
+      timeout: 5s
+      retries: 10
+
+  patient-service:
+    build:
+      context: ./patientservice
+    depends_on:
+      postgres:
+        condition: service_healthy
+    ports:
+      - "4003:4000"
+    environment:
+      SPRING_DATASOURCE_URL: jdbc:postgresql://postgres:5432/patientservicedb
+      SPRING_DATASOURCE_USERNAME: YASHU
+      SPRING_DATASOURCE_PASSWORD: YASHU
+      BILLING_SERVICE_ADDRESS: billing-service
+      BILLING_SERVICE_PORT: 9001
+    restart: on-failure
+
+  billing-service:
+    build:
+      context: ./billingservice
+    container_name: billing-service
+    depends_on:
+      postgres:
+        condition: service_healthy
+    ports:
+      - "4002:4001"
+      - "9002:9001"
+    environment:
+      SPRING_APPLICATION_NAME: billingservice
+    restart: on-failure
+
+volumes:
+  patient_pgdata:
