@@ -1,19 +1,38 @@
+// This file defines the gRPC contract for the billing service.
+// The client and server both use this contract to communicate.
+
+// Use Protocol Buffers version 3 syntax.
 syntax = "proto3";
 
+// Generate separate Java classes for each message and service.
 option java_multiple_files = true;
+
+// Put generated Java classes under the `billing` package.
 option java_package = "billing";
 
+// `service` defines the RPC methods that the server exposes.
 service BillingService {
+  // RPC method: client sends a BillingRequest and receives a BillingResponse.
   rpc CreateBillingAccount (BillingRequest) returns (BillingResponse);
 }
 
+// Request payload sent when creating a billing account.
 message BillingRequest {
+  // Field 1: patient ID associated with this billing account.
   string patientId = 1;
+
+  // Field 2: account holder's name.
   string name = 2;
+
+  // Field 3: email address for billing communication.
   string email = 3;
 }
 
+// Response returned after a billing account is created.
 message BillingResponse {
+  // Field 1: unique generated billing account ID.
   string accountId = 1;
+
+  // Field 2: status of the operation such as SUCCESS or FAILED.
   string status = 2;
 }

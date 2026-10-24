@@ -1,0 +1,28 @@
+// This file defines the structure of a Kafka event for patient-related changes.
+// Kafka producers publish this message to a topic, and consumers read it later.
+
+// Tells the protobuf compiler to use Protocol Buffers version 3 syntax.
+syntax = "proto3";
+
+// Groups generated classes under the package `patient.event`.
+// This helps avoid name conflicts with other service message types.
+package patient.event;
+option java_multiple_files = true;
+
+message PatientEvent {
+  // Field number 1: unique patient identifier.
+  // It is stored as a string because IDs may be UUID-like values.
+  string patientId = 1;
+
+  // Field number 2: patient name.
+  string name = 2;
+
+  // Field number 3: patient email address.
+  string email = 3;
+
+  // Field number 4: event type such as CREATED, UPDATED, or DELETED.
+  // The comment shows examples of valid values.
+  string eventType = 4; // e.g., "CREATED", "UPDATED", "DELETED"
+
+}
+//but here we are creating in each for learning purpose. In real world we will have only one proto file which will be consumed by all other micorservices. This proto file will be used to generate the java classes for all the microservices. The generated classes will be used to serialize and deserialize the messages sent over Kafka.
