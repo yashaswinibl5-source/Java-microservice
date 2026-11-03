@@ -9,7 +9,7 @@
     ports:
       - "5433:5432"
     volumes:
-      - patient_pgdata:/var/lib/postgresql/data
+      - ./postgres-data:/var/lib/postgresql/data
     healthcheck:
       test: ["CMD-SHELL", "pg_isready -U YASHU -d patientservicedb"]
       interval: 5s
@@ -55,7 +55,7 @@
       kafka:
         condition: service_healthy
     ports:
-      - "4004:8080"
+      - "4005:8080"
     environment:
       SPRING_KAFKA_BOOTSTRAP_SERVERS: kafka:9092
     restart: on-failure
@@ -97,5 +97,46 @@
       KAFKA_BROKERCONNECT: kafka:9092
     restart: unless-stopped
 
-volumes:
-  patient_pgdata:
+  auth-postgres:
+    image: postgres:16-alpine
+    container_name: auth-postgres
+    environment:
+      POSTGRES_DB: authdb
+      POSTGRES_USER: authuser
+      POSTGRES_PASSWORD: authpass
+    ports:
+      - "5434:5432"
+    volumes:
+      - ./auth-data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U authuser -d authdb"]
+      interval: 5s
+      timeout: 5s
+      retries: 10
+
+  api-gateway:
+    build:
+      context: ./api-gateway
+    depends_on:
+      - patient-service
+      - auth-service
+    environment:
+      JWT_SECRET: QkFZV2J4Mml4NEN2U2cweHNrN2xJb1dVWE1qRVBNV0U=
+    ports:
+      - "4004:4004"
+
+  auth-service:
+    build:
+      context: ./auth-service
+    container_name: auth-service
+    depends_on:
+      auth-postgres:
+        condition: service_healthy
+    ports:
+      - "4006:4005"
+    environment:
+      SPRING_DATASOURCE_URL: jdbc:postgresql://auth-postgres:5432/authdb
+      SPRING_DATASOURCE_USERNAME: authuser
+      SPRING_DATASOURCE_PASSWORD: authpass
+      JWT_SECRET: QkFZV2J4Mml4NEN2U2cweHNrN2xJb1dVWE1qRVBNV0U=
+    restart: on-failure
